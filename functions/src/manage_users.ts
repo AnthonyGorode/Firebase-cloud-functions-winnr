@@ -12,6 +12,10 @@ interface User {
     email: string;
 }
 
+export const get_user_by_uid = functions.https.onCall((uid: string,context) => {
+    return db.doc(`users/${uid}`).get();
+})
+
 export const add_new_user = functions.https.onCall(async(user: User ,context) => {
     const { firstname,lastname,email } = user;
     
@@ -62,8 +66,9 @@ export const delete_user_record = auth
 export const feed_create_last_modification = functions.firestore
     .document(`feeds/{uid}`)
     .onCreate((snapshot,context) => {
-        console.log(context.auth);
+        // let uid = "";
         const uid = context.auth?.uid;
+        // console.log("HERE => ",uid);
         
         const userRef = db.doc(`users/${uid}`);
 

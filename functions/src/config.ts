@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import * as serviceAccount from './adminsdk.json';
+import * as serviceAccount from './configurations/adminsdk.json';
 
 const config_adm_sdk = {
     type: serviceAccount.type,
