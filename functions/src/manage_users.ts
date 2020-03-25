@@ -12,8 +12,9 @@ interface User {
     email: string;
 }
 
-export const get_user_by_uid = functions.https.onCall((uid: string,context) => {
-    return db.doc(`users/${uid}`).get();
+export const get_user_by_uid = functions.https.onCall(async(uid: string,context) => {
+    const credentials = db.doc(`users/${uid}`).get();
+    return (await credentials).exists;
 })
 
 export const add_new_user = functions.https.onCall(async(user: User ,context) => {
@@ -81,7 +82,7 @@ export const feed_create_last_modification = functions.firestore
 export const feed_delete_last_modification = functions.firestore
     .document(`feeds/{uid}`)
     .onDelete((snapshot,context) => {
-        console.log(context.auth);
+        // console.log(context.auth);
         const uid = context.auth?.uid;
         
         const userRef = db.doc(`users/${uid}`);
